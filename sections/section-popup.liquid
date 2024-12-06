@@ -1,0 +1,86 @@
+{{ 'popup.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'popup.js' | asset_url }}" defer="defer"></script>
+
+<div class="popup">
+  <div class="popup__inner">
+        {% for block in section.blocks %}
+          {% if block.type == 'popup-img' %}
+        <div class="popup__inner-img">
+         {{ block.settings.image |image_url: width: 500|  image_tag }}
+        </div>
+        {% endif %}
+        {% if block.type == 'popup-desc' %}
+        <div class="popup__inner-content">
+          <h1 class="heading border">
+             {{ block.settings.popup-title }}
+          </h1>
+          <p class="desc border">
+            {{ block.settings.popup-content }}
+          </p>
+          <form action="#" method="post" id="formjs" class="form">
+            <input
+              type="text"
+              name="email"
+              placeholder="Your email"
+              id="emailinput"
+            />
+            <p class="emailFeedback"></p>
+            <button class="btnsub">Submit</button>
+          </form>
+          <p class="textskip border">No thanks</p>
+          </div>
+        {% endif %}
+        
+       {% endfor %}
+    </div>
+</div>
+{% schema %}
+  {
+    "name": "Popup",
+    "tag": "section",
+    "class": "section",
+  //   "settings": [{
+  //   	"type": "text",
+	// 	"id": "heading-title",
+	// 	"label": "heading-popup"
+  // }],
+  "blocks": [
+    {
+      "name": "Popup image",
+	    "type": "popup-img",
+      "limit": 1,
+      "settings": [
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image popup"
+        }
+       ]
+  },
+   {
+      "name": "Popup description",
+	    "type": "popup-desc",
+      "limit": 1,
+      "settings": [
+         {
+           "type": "text",
+            "id": "popup-title",
+            "label": "Popup title",
+            "default": "Popup title"
+        },
+        {
+           "type": "text",
+            "id": "popup-content",
+            "label": "Popup content",
+             "default": "Popup content"
+        }
+       ]
+  }
+],
+  "presets": [
+    {
+      "name": "Popup"
+    }
+  ]
+  }
+{% endschema %}

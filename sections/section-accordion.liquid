@@ -1,0 +1,96 @@
+{{ 'accordion.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'accordion.js' | asset_url }}" defer="defer"></script>
+{% comment %} {{ 'accordion.js' | asset_url | stylesheet_tag }} {% endcomment %}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="accordion">
+  <div class="container">
+    <div class="textbox">
+      <h2 class="heading">{{ section.settings.heading-title }}</h2>
+    </div>
+
+    {% for block in section.blocks %}
+      {% if block.type == 'FAQ' %}
+        <div class="accordion__list-item">
+          
+             <div class="question">
+              <h3>{{ block.settings.title }}</h3>
+              <div class="icon"><span></span></div>
+              {% comment %} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="48"><path d="M480-345 240-585l43-43 197 198 197-197 43 43-240 239Z"/></svg> {% endcomment %}
+            </div>
+
+             <div class="answer">
+              <div class="answer__title">
+                {{ block.settings.answer }}
+              </div>
+              <div class="answer__content">
+                 {{ block.settings.answer_content }}
+              </div>
+            </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+</section>
+
+{% schema %}
+{
+  "name": "Accordion",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [{
+    	"type": "text",
+			"id": "heading-title",
+			"label": "heading",
+      "default": " FAQ on Design & Development"
+  }],
+  "blocks": [
+    {
+      "name": "FAQ Item",
+			"type": "FAQ",
+			"settings": [
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Question title",
+					"default": "Your question"
+				},
+        	{
+					"type": "textarea",
+					"id": "answer",
+					"label": "Answer title",
+					"default": "Your answer title"
+				},
+        {
+					"type": "textarea",
+					"id": "answer_content",
+					"label": "Answer content",
+					"default": "Your answer content"
+				},
+			]
+    }
+	],
+  "presets": [
+    {
+      "name": "Accordion"
+    }
+  ],
+  "locales": {}
+}
+{% endschema %}
